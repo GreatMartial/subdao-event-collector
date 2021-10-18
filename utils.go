@@ -44,14 +44,14 @@ func UnmarshalSubscanEventsBodyByBatch(src []byte) error {
 
 			var extrinsicSinger = ""
 			var err error
-			
+
 			if value.ExtrinsicHash != "" {
 				extrinsicSinger, err = getAssociateAddrByHash(value.ExtrinsicHash)
 				if err != nil {
 					log.Printf("index: %d, extrinsic_idx: %d, getAssociateAddrByHash error: %v\n", index, value.ExtrinsicIdx, err.Error())
 				}
 			}
-
+			log.Printf("index: %d, extrinsicSinger: %s\n", index, extrinsicSinger)
 			eventCollect := &EventCollect{
 				EventIndex:        value.EventIndex,
 				BlockNum:          value.BlockNum,
@@ -111,6 +111,7 @@ func getAssociateAddrByHash(extrHash string) (string, error) {
 		return "", err
 	}
 
+	log.Printf("associate_addr body: %v", string(respBody))
 	temp := SubscanExtrinscRespBody{}
 	if err := json.Unmarshal(respBody, &temp); err != nil {
 		return "", err

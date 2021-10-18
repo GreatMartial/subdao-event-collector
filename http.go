@@ -13,7 +13,6 @@ import (
 
 type hanldeFunc func(string, string, io.Reader) ([]byte, error)
 
-
 func InvokeHttpReq(url string, method string, payload io.Reader) ([]byte, error) {
 	// setting timeout
 	client := &http.Client{
@@ -39,6 +38,8 @@ func InvokeHttpReq(url string, method string, payload io.Reader) ([]byte, error)
 	log.Printf("req value: %+v\n", req)
 
 	req.Header.Add("Content-Type", "application/json;charset=utf-8")
+	// req.Header.Add("X-API-Key", "7c9b6e4159f94672caae91c0e572bc6e")
+
 	resp, err := client.Do(req)
 	if err != nil {
 		// err = errors.New(fmt.Sprintf("invoke req failed: %v\n", err.Error()))

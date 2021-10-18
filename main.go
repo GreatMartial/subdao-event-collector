@@ -15,12 +15,14 @@ const (
 	// targetUrl = "https://polkadot.api.subscan.io"
 	targetUrl = "https://kusama.api.subscan.io"
 
-	targetModule = "society"
+	targetModule = "treasury"
+	targetCall = "proposed"
+
 )
 
 var (
 	// append event collect of marshal from subScan.
-	c      chan interface{}
+	c chan interface{}
 	// signal chan bool
 )
 
@@ -32,8 +34,15 @@ func main() {
 	str := fmt.Sprintf(`{
 		"row": 1,
 		"page": 0,
+		"module": "%s",
+		"call": "%s"
+	}`, targetModule, targetCall)
+
+/* 	str := fmt.Sprintf(`{
+		"row": 1,
+		"page": 0,
 		"module": "%s"
-	}`, targetModule)
+	}`, targetModule)	 */
 	payload := strings.NewReader(str)
 	
 
@@ -85,18 +94,22 @@ func main() {
 		
 	go func() {
 		// i is page number, default value is 1.
-		// for p := 36; p < totalPageNum; p++ {
-		totalPageNum = 36
-		for p := 35; p < totalPageNum; p++ {	
+		for p := 0; p < totalPageNum; p++ {	
 			// TODO: create batch request.
 			str := fmt.Sprintf(`{
 				"row": %d,
 				"page": %d,
-				"module": "%s"
-			}`, row, p, targetModule)
+				"module": "%s",
+				"call": "%s"
+			}`, row, p, targetModule, targetCall)
+			// str := fmt.Sprintf(`{
+			// 	"row": %d,
+			// 	"page": %d,
+			// 	"module": "%s"
+			// }`, row, p, targetModule)	
 			// log.Printf(str)
 			payload := strings.NewReader(str)
-			// log.Printf("str: %s", payload)
+			log.Printf("str: %s", payload)
 			log.Printf("batch request----row: %d, page: %d, module: %s\n", row, p, targetModule)
 		
 			// wait seconds
