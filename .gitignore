@@ -16,3 +16,6 @@ vendor/
 
 # vscode
 *.vscode
+
+# table files
+*.csv
